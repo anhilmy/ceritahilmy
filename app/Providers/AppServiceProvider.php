@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         DB::listen(function ($query) {
+            Schema::defaultStringLength(191);
             $sql = Str::of($query->sql)->replace('`', '');
 
             if ($sql->contains('set slug') || $sql->contains('set excerpt') || $sql->contains('set meta')
